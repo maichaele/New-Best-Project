@@ -40,6 +40,7 @@ jobs:
         shell: bash
         run: |
           set -e
+
           # Nama-nama level
           cool_names=(
             "Vortex" "Nebula" "Phoenix" "Falcon" "Titan" "Shadow" "Blaze" "Nova" "Specter" "Stellar"
@@ -49,7 +50,7 @@ jobs:
             "Turbo" "Rogue" "Elemental" "Surge" "Radiant" "Zenith" "Prime" "Sentinel" "Golem" "Mystic"
           )
 
-          # ASCII arts, disimpan di file temporer (satu per blok, dipisah ---)
+          # ASCII arts, dipisah dengan ---
           ascii_arts_file=$(mktemp)
           cat <<'EOF' > $ascii_arts_file
    _____
@@ -347,8 +348,8 @@ jobs:
 |    |
 EOF
 
-          # Baca ASCII arts ke array, dipisah dengan delimiter '---'
-          IFS=$'\n' GLOBIGNORE='*' command eval  'ascii_arts=($(awk -v RS="---" "{gsub(/^\n+|\n+$/, \"\"); print}" $ascii_arts_file))'
+          # Membaca ASCII arts ke array, dipisah delimiter ---
+          mapfile -t ascii_arts < <(awk -v RS='---' '{gsub(/^\n+|\n+$/, ""); print}' "$ascii_arts_file")
 
           if [ "${#cool_names[@]}" -ne "${#ascii_arts[@]}" ]; then
             echo "ERROR: Jumlah nama dan gambar harus sama!"
