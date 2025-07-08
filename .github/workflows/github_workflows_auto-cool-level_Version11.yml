@@ -22,20 +22,6 @@ jobs:
           echo "=============================="
           echo ""
 
-      - name: 🔔 Kirim Notifikasi ke Telegram
-        uses: appleboy/telegram-action@v0.1.0
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🔔 DING DONG!
-            Level baru sudah dibuat di repo ${{ github.repository }} pada ${{ github.run_started_at || github.run_id }}.
-
-      - name: 🔔 Write Bell Marker File
-        run: |
-          mkdir -p levels
-          echo "🔔 DING DONG! $(date -u)" > levels/bell-$(date +%Y%m%d-%H%M).txt
-
       - name: 📝 Generate Next Cool Level (no ASCII)
         shell: bash
         run: |
@@ -75,7 +61,19 @@ jobs:
             echo "# Generated at: $(date -u)"
           } > "$file_name"
 
+          # Simpan nama level ke environment agar bisa dipakai di step berikutnya (Telegram)
+          echo "LEVEL_NAME=$next_name" >> $GITHUB_ENV
+
           echo "Created $file_name"
+
+      - name: 🔔 Kirim Notifikasi ke Telegram
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🔔 DING DONG!
+            Level baru **${{ env.LEVEL_NAME }}** sudah dibuat di repo ${{ github.repository }} pada ${{ github.run_started_at || github.run_id }}.
 
       - name: 🤖 Configure Git
         run: |
@@ -85,5 +83,5 @@ jobs:
       - name: 🚩 Commit & Push Changes
         run: |
           git add levels/
-          git commit -m "✨ Add Level: $next_name" || echo "Nothing to commit"
+          git commit -m "✨ Add Level: ${{ env.LEVEL_NAME }}" || echo "Nothing to commit"
           git push
