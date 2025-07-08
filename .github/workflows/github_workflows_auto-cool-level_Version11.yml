@@ -1,0 +1,343 @@
+name: 🚀 Auto Cool Level Generator
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-level:
+    name: 🌟 Generate Cool Level
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔔 Sound Bell (Log)
+        run: |
+          echo ""
+          echo "=============================="
+          echo "🔔 DING DONG! Saatnya level baru!"
+          echo "=============================="
+          echo ""
+
+      - name: 🔔 Kirim Notifikasi ke Telegram
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🔔 DING DONG!
+            Level baru sudah dibuat di repo ${{ github.repository }} pada ${{ github.run_started_at || github.run_id }}.
+
+      - name: 🔔 Write Bell Marker File
+        run: |
+          mkdir -p levels
+          echo "🔔 DING DONG! $(date -u)" > levels/bell-$(date +%Y%m%d-%H%M).txt
+
+      - name: 📝 Generate Next Cool Level with Matching ASCII Art
+        shell: bash
+        run: |
+          set -e
+          cool_names=(
+            "Vortex" "Nebula" "Phoenix" "Falcon" "Titan" "Shadow" "Blaze" "Nova" "Specter" "Stellar"
+            "Inferno" "Cosmos" "Zephyr" "Obsidian" "Glacier" "Thunder" "Matrix" "Aurora" "Samurai" "Ninja"
+            "Ronin" "Valkyrie" "Oracle" "Sonic" "Ranger" "Drift" "Mirage" "Cipher" "Echo" "Titanium"
+            "Genesis" "Saber" "Onyx" "Blizzard" "Venom" "Storm" "Astro" "Galaxy" "Eclipse" "Magma"
+            "Turbo" "Rogue" "Elemental" "Surge" "Radiant" "Zenith" "Prime" "Sentinel" "Golem" "Mystic"
+          )
+          ascii_arts=(
+"   _____
+  /     \\
+ | () () |
+  \\  ^  /
+   |||||
+   |||||"
+"   /\\_/\\
+  ( o.o )
+   > ^ <"
+"    __
+   /  \\
+  / ..|\\
+ (\\--/_)
+  \\  /
+   || 
+   ||"
+"   ___
+ _(   )_
+(       )
+ |     |
+ |     |
+ |     |
+ |     |
+ |_____|
+/_______\\"
+"     _____
+    /     \\
+   /       \\
+  |  .---.  |
+  |  |   |  |
+  |  |   |  |
+  |  '---'  |
+   \\       /
+    \\_____/"
+"   .-\"\"-.
+  / .--. \\
+ / /    \\ \\
+| |      | |
+| |      | |
+| |      | |
+ \\ \\    / /
+  \\ '--' /
+   '-..-'"
+"   ______
+  /     /\\
+ /     /##\\
+/     /####\\
+\\    /#####/
+ \\  /#####/
+  \\/_____/"
+"      __
+   _ (..) _
+  (_      _)
+    /    \\
+   (      )
+    `----'"
+"    __
+   (  )
+  (____)
+  (____)
+  (____)
+   |  |
+   |  |"
+"      __
+ (\\,--------'()'--o
+ (_    ___    /~\\
+  (_)_)  (_)_)"
+"   ^    ^ 
+  (o)  (o)
+   \\____/
+   /    \\
+  /_/  \\_\\"
+"   _____
+  /     \\
+ |  0 0  |
+ |   ^   |
+ |  '-'  |
+  \\_____/"
+"    .--.
+   |o_o |
+   |:_/ |
+  //   \\ \\
+ (|     | )
+/'\\_   _/`\\
+\\___)=(___/"
+"   .-.
+  /   \\
+  |   |
+  \\___/"
+"  /\\
+ /  \\
+/____\\
+|    |"
+"    ___
+   /   \\
+  |     |
+  |     |
+  |     |
+   \\___/"
+"   ____
+  / ___|
+ | |_
+ |  _|
+ | |___
+  \\____|"
+"   ____
+  / ___|
+ | |  _
+ | |_| |
+  \\____|"
+"   __ __
+  (  V  )
+   |   |
+   |   |
+   |___|"
+"   _/\\_
+  /    \\
+ |      |
+ |      |
+  \\____/"
+"   __
+  /  \\
+ | () |
+  \\__/"
+"    ||
+   (  )
+  (    )
+   (  )
+    ||"
+"   __
+  (oo)
+ /|\\/\\
+   |  |
+   m  m"
+"  __
+ /  \\
+|    |
+|    |
+|____|
+|____|"
+"   __
+ _|==|_
+  ('')____
+  (   )    )\\
+  ||--|| *"
+"    __
+   /  \\
+  / ..|\\
+ (\\--/_)
+  \\  /
+   || 
+   ||"
+"  _____
+ /     \\
+| () () |
+ \\  ^  /
+  |||||
+  |||||"
+"   .-.
+  (o o)
+   |=|
+  __|__"
+"  _____
+ /     \\
+| () () |
+ \\  ^  /
+  |||||
+  |||||"
+"    __
+   /  \\
+  / ..|\\
+ (\\--/_)
+  \\  /
+   || 
+   ||"
+"   ___
+ _(   )_
+(       )
+ |     |
+ |     |
+ |     |
+ |     |
+ |_____|
+/_______\\"
+"     _____
+    /     \\
+   /       \\
+  |  .---.  |
+  |  |   |  |
+  |  |   |  |
+  |  '---'  |
+   \\       /
+    \\_____/"
+"   .-\"\"-.
+  / .--. \\
+ / /    \\ \\
+| |      | |
+| |      | |
+| |      | |
+ \\ \\    / /
+  \\ '--' /
+   '-..-'"
+"   ______
+  /     /\\
+ /     /##\\
+/     /####\\
+\\    /#####/
+ \\  /#####/
+  \\/_____/"
+"      __
+   _ (..) _
+  (_      _)
+    /    \\
+   (      )
+    `----'"
+"    __
+   (  )
+  (____)
+  (____)
+  (____)
+   |  |
+   |  |"
+"      __
+ (\\,--------'()'--o
+ (_    ___    /~\\
+  (_)_)  (_)_)"
+"   ^    ^ 
+  (o)  (o)
+   \\____/
+   /    \\
+  /_/  \\_\\"
+"   _____
+  /     \\
+ |  0 0  |
+ |   ^   |
+ |  '-'  |
+  \\_____/"
+"    .--.
+   |o_o |
+   |:_/ |
+  //   \\ \\
+ (|     | )
+/'\\_   _/`\\
+\\___)=(___/"
+"   .-.
+  /   \\
+  |   |
+  \\___/"
+"  /\\
+ /  \\
+/____\\
+|    |"
+          )
+          if [ "${#cool_names[@]}" -ne "${#ascii_arts[@]}" ]; then
+            echo "ERROR: Jumlah nama dan gambar harus sama!"
+            exit 1
+          fi
+          mkdir -p levels
+          last_name=""
+          if ls levels/level-*-*.txt 1> /dev/null 2>&1; then
+            last_file=$(ls levels/level-*-*.txt | sort | tail -n 1)
+            last_name=$(basename "$last_file" | sed -E 's/level-[0-9]{8}-[0-9]{4}-(.*)\.txt/\1/')
+          fi
+          idx=0
+          if [ -n "$last_name" ]; then
+            for i in "${!cool_names[@]}"; do
+              if [[ "${cool_names[$i]}" == "$last_name" ]]; then
+                idx=$(( (i + 1) % ${#cool_names[@]} ))
+                break
+              fi
+            done
+          fi
+          next_name="${cool_names[$idx]}"
+          ascii_img="${ascii_arts[$idx]}"
+          file_name="levels/level-$(date +%Y%m%d-%H%M)-${next_name}.txt"
+          {
+            echo "# 🌌 Level: $next_name"
+            echo "# Generated at: $(date -u)"
+            echo ""
+            echo "$ascii_img"
+          } > "$file_name"
+          echo "Created $file_name"
+
+      - name: 🤖 Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 🚩 Commit & Push Changes
+        run: |
+          git add levels/
+          git commit -m "✨ Add Level: $next_name" || echo "Nothing to commit"
+          git push
