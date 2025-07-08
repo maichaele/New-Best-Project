@@ -41,7 +41,6 @@ jobs:
         run: |
           set -e
 
-          # Nama-nama level
           cool_names=(
             "Vortex" "Nebula" "Phoenix" "Falcon" "Titan" "Shadow" "Blaze" "Nova" "Specter" "Stellar"
             "Inferno" "Cosmos" "Zephyr" "Obsidian" "Glacier" "Thunder" "Matrix" "Aurora" "Samurai" "Ninja"
@@ -52,7 +51,6 @@ jobs:
 
           mkdir -p levels
 
-          # Cari nama terakhir yang dipakai
           last_name=""
           if ls levels/level-*-*.txt 1> /dev/null 2>&1; then
             last_file=$(ls levels/level-*-*.txt | sort | tail -n 1)
