@@ -59,6 +59,7 @@ jobs:
           {
             echo "# 🌌 Level: $next_name"
             echo "# Generated at: $(date -u)"
+            echo "# Dijalankan oleh: MAICHAIL-BEE"
           } > "$file_name"
 
           # Simpan nama level ke environment agar bisa dipakai di step berikutnya (Telegram)
@@ -73,15 +74,15 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             🔔 DING DONG!
-            Level baru **${{ env.LEVEL_NAME }}** sudah dibuat di repo ${{ github.repository }} pada ${{ github.run_started_at || github.run_id }}.
+            Level baru **${{ env.LEVEL_NAME }}** sudah dibuat di repo ${{ github.repository }} pada ${{ github.run_started_at || github.run_id }} oleh **LEONARDUS-BEE**.
 
       - name: 🤖 Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "MAICHAIL-BEE"
+          git config user.email "leonardus-bee@users.noreply.github.com"
 
       - name: 🚩 Commit & Push Changes
         run: |
           git add levels/
-          git commit -m "✨ Add Level: ${{ env.LEVEL_NAME }}" || echo "Nothing to commit"
+          git commit -m "✨ Add Level: ${{ env.LEVEL_NAME }} (by LEONARDUS-BEE)" || echo "Nothing to commit"
           git push
